@@ -2,6 +2,7 @@
 
 use Backend\Models\ImportModel;
 use Exception;
+use Carbon\Carbon;
 
 class RealestatedsImport extends ImportModel
 {
@@ -51,7 +52,7 @@ class RealestatedsImport extends ImportModel
                 $realestated->area = $data['area'] ?? null;
                 $realestated->syria_price = $data['syria_price'] ?? null;
                 $realestated->dollar_price = $data['dollar_price'] && !empty($data['dollar_price']) ? null : $data['dollar_price'];
-                $realestated->purchase_date = $data['purchase_date'] ?? null;
+                $realestated->purchase_date =   $data['purchase_date'] ? $realestated->purchase_date = Carbon::createFromFormat('m/d/y', $data['purchase_date'])->format('Y-m-d') : null;
                 $realestated->point = $data['point'] ?? null;
                 
                 $realestated->save();

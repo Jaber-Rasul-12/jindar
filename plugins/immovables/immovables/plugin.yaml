@@ -1,0 +1,39 @@
+plugin:
+    name: 'immovables.immovables::lang.plugin.name'
+    description: 'immovables.immovables::lang.plugin.description'
+    author: immovables
+    icon: 'fas icon-immovables'
+    replaces: {  }
+permissions:
+    log_changes_immovabless:
+        tab: 'immovables.immovables::lang.plugin.immovabless'
+        label: 'immovables.immovables::lang.plugin.log_changes_immovabless'
+    immovabless_menu:
+        tab: 'immovables.immovables::lang.plugin.immovabless_menu'
+        label: 'immovables.immovables::lang.plugin.immovabless_menu'
+    country:
+        tab: 'immovables.immovables::lang.plugin.immovabless'
+        label: 'immovables.immovables::lang.plugin.country'
+    realestateds:
+        tab: 'immovables.immovables::lang.plugin.immovabless'
+        label: 'immovables.immovables::lang.plugin.realestateds'
+navigation:
+    immovabless_settings:
+        label: 'immovables.immovables::lang.plugin.immovabless_menu'
+        url: immovables/immovables/countries
+        icon: icon-cogs
+        permissions:
+            - immovabless_menu
+        sideMenu:
+            country:
+                label: 'immovables.immovables::lang.plugin.country'
+                url: immovables/immovables/countries
+                icon: icon-globe
+                permissions:
+                    - country
+            realestateds:
+                label: 'immovables.immovables::lang.plugin.realestateds'
+                url: immovables/immovables/realestateds
+                icon: icon-star-half-empty
+                permissions:
+                    - realestateds

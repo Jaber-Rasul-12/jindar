@@ -1,0 +1,29 @@
+columns:
+    country:
+        label: 'country'
+        relation: country
+        select: name
+    first_team:
+        label: 'first_team'
+        type: text
+    second_team:
+        label: 'second_team'
+        type: text
+    type:
+        label: 'type'
+        type: text
+    detail:
+        label: 'detail'
+        type: text
+    area:
+        label: 'area'
+        type: text
+    syria_price:
+        label: 'syria_price'
+        type: text
+    dollar_price:
+        label: 'dollar_price'
+        type: text
+    purchase_date:
+        label: 'purchase_date'
+        type: text

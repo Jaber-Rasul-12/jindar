@@ -1,0 +1,10 @@
+name: Countries
+form: $/immovables/immovables/models/country/fields.yaml
+modelClass: Immovables\Immovables\Models\Country
+defaultRedirect: immovables/immovables/countries
+create:
+    redirect: 'immovables/immovables/countries/update/:id'
+    redirectClose: immovables/immovables/countries
+update:
+    redirect: immovables/immovables/countries
+    redirectClose: immovables/immovables/countries

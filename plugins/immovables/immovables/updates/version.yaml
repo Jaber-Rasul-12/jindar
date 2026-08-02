@@ -1,0 +1,11 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table immovables_immovables_countries'
+    - builder_table_create_immovables_immovables_countries.php
+1.0.3:
+    - 'Created table immovables_immovables_realestateds'
+    - builder_table_create_immovables_immovables_realestateds.php
+1.0.4:
+    - 'Created table Seeders'
+    - seeders_table.php

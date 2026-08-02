@@ -1,0 +1,13 @@
+columns:
+    id:
+        label: 'immovables.immovables::lang.model.country.id'
+        type: number
+    name:
+        label: 'immovables.immovables::lang.model.country.name'
+        type: text
+    created_at:
+        label: 'immovables.immovables::lang.model.country.created_at'
+        type: datetime
+    updated_at:
+        label: 'immovables.immovables::lang.model.country.updated_at'
+        type: datetime

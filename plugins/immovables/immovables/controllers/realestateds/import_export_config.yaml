@@ -1,0 +1,10 @@
+
+import:
+    title: immovables.immovables::lang.plugin.import
+    modelClass: Immovables\Immovables\Models\RealestatedsImport
+    list: $/immovables/immovables/models/realestated/columns_import.yaml
+
+export:
+    title: immovables.immovables::lang.plugin.export
+    modelClass: Immovables\Immovables\Models\RealestatedsExport
+    list: $/immovables/immovables/models/realestated/columns.yaml

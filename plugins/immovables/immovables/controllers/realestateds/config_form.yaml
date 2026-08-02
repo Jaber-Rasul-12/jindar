@@ -1,0 +1,10 @@
+name: 'immovables.immovables::lang.controller.realestateds.realestateds'
+form: $/immovables/immovables/models/realestated/fields.yaml
+modelClass: Immovables\Immovables\Models\Realestated
+defaultRedirect: immovables/immovables/realestateds
+create:
+    redirect: 'immovables/immovables/realestateds/update/:id'
+    redirectClose: immovables/immovables/realestateds
+update:
+    redirect: immovables/immovables/realestateds
+    redirectClose: immovables/immovables/realestateds

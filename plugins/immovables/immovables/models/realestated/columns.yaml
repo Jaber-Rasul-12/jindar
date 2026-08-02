@@ -1,0 +1,41 @@
+columns:
+    id:
+        label: 'immovables.immovables::lang.model.realestated.id'
+        type: number
+    country:
+        label: 'immovables.immovables::lang.model.realestated.country'
+        relation: country
+        select: name
+    first_team:
+        label: 'immovables.immovables::lang.model.realestated.first_team'
+        type: text
+    second_team:
+        label: 'immovables.immovables::lang.model.realestated.second_team'
+        type: text
+    type:
+        label: 'immovables.immovables::lang.model.realestated.type'
+        type: text
+    detail:
+        label: 'immovables.immovables::lang.model.realestated.detail'
+        type: text
+    area:
+        label: 'immovables.immovables::lang.model.realestated.area'
+        type: text
+    syria_price:
+        label: 'immovables.immovables::lang.model.realestated.syria_price'
+        type: text
+    dollar_price:
+        label: 'immovables.immovables::lang.model.realestated.dollar_price'
+        type: text
+    purchase_date:
+        label: 'immovables.immovables::lang.model.realestated.purchase_date'
+        type: text
+    point:
+        label: 'immovables.immovables::lang.model.realestated.point'
+        type: text
+    created_at:
+        label: 'immovables.immovables::lang.model.realestated.created_at'
+        type: datetime
+    updated_at:
+        label: 'immovables.immovables::lang.model.realestated.updated_at'
+        type: datetime

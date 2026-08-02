@@ -41,5 +41,8 @@ return [
         'countries' => [
             'countries' => 'Countries',
         ],
+        'realestateds' => [
+            'realestateds' => 'Realestateds',
+        ],
     ],
 ];

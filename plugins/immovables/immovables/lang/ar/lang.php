@@ -7,7 +7,7 @@ return [
         'immovabless_menu' => 'العقارات',
         'realestateds' => 'العقارات المسجلة',
         'countries' => 'المدن',
-        'county' => 'المدن',
+        'country' => 'المدن',
 
         'log_changes' => 'سجل التغييرات',
         'message_delete' => 'لا يمكن الحذف بسبب وجود سجلات مرتبطة بهذا القسم.',

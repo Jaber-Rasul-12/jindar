@@ -7,7 +7,7 @@ return [
         'immovabless_menu' => 'immovabless',
         'realestateds'=> 'Realestateds',
         'countries' => 'Countries',
-        'county' => 'Country',
+        'country' => 'Country',
 
         'log_changes' => 'Log Changes',
         'message_delete' => 'Deletion is not possible due to the presence of records associated with the section.',

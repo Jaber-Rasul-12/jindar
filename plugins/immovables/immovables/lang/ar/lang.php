@@ -22,6 +22,8 @@ return [
         'status' => 'الحالة',
         'images' => 'الصور',
         'print' => 'طباعة',
+        'save_and_print'=>'حفظ وطباعة',
+        'create_and_print'=>'إنشاء وطباعة',
     ],
     'model' => [
         'country' => [

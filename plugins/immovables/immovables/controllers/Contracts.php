@@ -22,4 +22,23 @@ class Contracts extends Controller
          $this->addCss('/plugins/immovables/immovables/assets/css/style_button.css', 'immovables.immovables');
 
     }
+
+
+       public function formGetRedirectUrl($context = null, $model = null)
+    {
+        $url = post('url');
+
+
+        if (($url == 'create') && !empty($url)) {
+            return "immovables/immovables/contracts";
+        }else if (($url == 'preview') && !empty($url)) {
+            return "immovables/immovables/contracts/$url/$model->id";
+        }else {
+            if ((post("close") == 1) && !empty(post("close"))) {
+                return "immovables/immovables/contracts";
+            } else {
+                return "immovables/immovables/contracts/update/$model->id";
+            }
+        }
+    }
 }

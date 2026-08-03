@@ -22,6 +22,8 @@ return [
         'status'=>'Status',
         'images'=>'Images',
         'print'=>'Print',
+        'save_and_print'=>'Save and Print',
+        'create_and_print'=>'Create and Print',
     ],
     'model' => [
         'country' => [

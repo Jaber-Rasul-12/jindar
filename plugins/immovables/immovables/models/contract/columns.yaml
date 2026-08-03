@@ -1,0 +1,74 @@
+columns:
+    id:
+        label: 'immovables.immovables::lang.model.contract.id'
+        type: number
+    print:
+        label: 'immovables.immovables::lang.plugin.print'
+        type: partial
+        path: button_print
+        clickable: false
+        sortable: false
+        searchable: false
+    customer_owner:
+        label: 'immovables.immovables::lang.model.contract.customer_owner'
+        relation: customer_owner
+        select: full_name
+    customer_tenant:
+        label: 'immovables.immovables::lang.model.contract.customer_tenant'
+        relation: customer_tenant
+        select: full_name
+    realestated:
+        label: 'immovables.immovables::lang.model.contract.realestated'
+        relation: realestated
+        select: id
+    lease_purpose:
+        label: 'immovables.immovables::lang.model.contract.lease_purpose'
+        type: text
+    start_date:
+        label: 'immovables.immovables::lang.model.contract.start_date'
+        type: text
+    end_date:
+        label: 'immovables.immovables::lang.model.contract.end_date'
+        type: text
+    total_duration:
+        label: 'immovables.immovables::lang.model.contract.total_duration'
+        type: text
+    rental_amount:
+        label: 'immovables.immovables::lang.model.contract.rental_amount'
+        type: text
+    payment_method:
+        label: 'immovables.immovables::lang.model.contract.payment_method'
+        type: text
+    payment_day:
+        label: 'immovables.immovables::lang.model.contract.payment_day'
+        type: text
+    security_deposit:
+        label: 'immovables.immovables::lang.model.contract.security_deposit'
+        type: text
+    default_days:
+        label: 'immovables.immovables::lang.model.contract.default_days'
+        type: text
+    termination_notice_days:
+        label: 'immovables.immovables::lang.model.contract.termination_notice_days'
+        type: text
+    renewal_notice_days:
+        label: 'immovables.immovables::lang.model.contract.renewal_notice_days'
+        type: text
+    judicial_district:
+        label: 'immovables.immovables::lang.model.contract.judicial_district'
+        type: text
+    witness_one:
+        label: 'immovables.immovables::lang.model.contract.witness_one'
+        type: text
+    witness_tow:
+        label: 'immovables.immovables::lang.model.contract.witness_tow'
+        type: text
+    status:
+        label: 'immovables.immovables::lang.model.contract.status'
+        type: text
+    created_at:
+        label: 'immovables.immovables::lang.model.contract.created_at'
+        type: datetime
+    updated_at:
+        label: 'immovables.immovables::lang.model.contract.updated_at'
+        type: datetime

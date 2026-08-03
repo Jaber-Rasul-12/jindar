@@ -1,0 +1,22 @@
+columns:
+    id:
+        label: 'immovables.immovables::lang.model.customer.id'
+        type: number
+    full_name:
+        label: 'immovables.immovables::lang.model.customer.full_name'
+        type: text
+    id_number:
+        label: 'immovables.immovables::lang.model.customer.id_number'
+        type: text
+    address:
+        label: 'immovables.immovables::lang.model.customer.address'
+        type: text
+    phone:
+        label: 'immovables.immovables::lang.model.customer.phone'
+        type: text
+    created_at:
+        label: 'immovables.immovables::lang.model.customer.created_at'
+        type: datetime
+    updated_at:
+        label: 'immovables.immovables::lang.model.customer.updated_at'
+        type: datetime

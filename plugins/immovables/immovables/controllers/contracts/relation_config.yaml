@@ -1,0 +1,38 @@
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+customer_owner:
+    label: 'immovables.immovables::lang.model.contract.customer_owner'
+    view:
+        form: $/immovables/immovables/models/customer/fields.yaml
+        toolbarButtons: create|add|link|update|delete|refresh
+    manage:
+        form: $/immovables/immovables/models/customer/fields.yaml
+        list: $/immovables/immovables/models/customer/columns.yaml
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+customer_tenant:
+    label: 'immovables.immovables::lang.model.contract.customer_tenant'
+    view:
+        form: $/immovables/immovables/models/customer/fields.yaml
+        toolbarButtons: create|add|link|update|delete|refresh
+    manage:
+        form: $/immovables/immovables/models/customer/fields.yaml
+        list: $/immovables/immovables/models/customer/columns.yaml
+
+
+# ===================================
+#  Relation Behavior Config
+# ===================================
+
+realestated:
+    label: 'immovables.immovables::lang.model.contract.realestated'
+    view:
+        form: $/immovables/immovables/models/realestated/fields.yaml
+        toolbarButtons: create|add|link|update|delete|refresh
+    manage:
+        form: $/immovables/immovables/models/realestated/fields.yaml
+        list: $/immovables/immovables/models/realestated/columns.yaml

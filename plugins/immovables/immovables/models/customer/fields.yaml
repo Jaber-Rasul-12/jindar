@@ -1,0 +1,17 @@
+fields:
+    full_name:
+        label: 'immovables.immovables::lang.model.customer.full_name'
+        span: auto
+        type: text
+    id_number:
+        label: 'immovables.immovables::lang.model.customer.id_number'
+        span: auto
+        type: text
+    address:
+        label: 'immovables.immovables::lang.model.customer.address'
+        span: auto
+        type: text
+    phone:
+        label: 'immovables.immovables::lang.model.customer.phone'
+        span: auto
+        type: text

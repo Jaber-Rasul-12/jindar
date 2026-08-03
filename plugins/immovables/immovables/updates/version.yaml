@@ -9,3 +9,9 @@
 1.0.4:
     - 'Created table Seeders'
     - seeders_table.php
+1.0.5:
+    - 'Created table immovables_immovables_customers'
+    - builder_table_create_immovables_immovables_customers.php
+1.0.6:
+    - 'Created table immovables_immovables_contracts'
+    - builder_table_create_immovables_immovables_contracts.php

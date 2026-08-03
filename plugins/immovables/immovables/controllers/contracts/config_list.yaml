@@ -1,0 +1,12 @@
+list: $/immovables/immovables/models/contract/columns.yaml
+modelClass: Immovables\Immovables\Models\Contract
+title: 'immovables.immovables::lang.controller.contracts.contracts'
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'immovables/immovables/contracts/update/:id'

@@ -17,6 +17,12 @@ permissions:
     realestateds:
         tab: 'immovables.immovables::lang.plugin.immovabless'
         label: 'immovables.immovables::lang.plugin.realestateds'
+    customers:
+        tab: 'immovables.immovables::lang.plugin.immovabless'
+        label: 'immovables.immovables::lang.plugin.customers'
+    contracts:
+        tab: 'immovables.immovables::lang.plugin.immovabless'
+        label: 'immovables.immovables::lang.plugin.contracts'
 navigation:
     immovabless_settings:
         label: 'immovables.immovables::lang.plugin.immovabless_menu'
@@ -37,3 +43,15 @@ navigation:
                 icon: icon-star-half-empty
                 permissions:
                     - realestateds
+            customers:
+                label: 'immovables.immovables::lang.plugin.customers'
+                url: immovables/immovables/customers
+                icon: icon-user-plus
+                permissions:
+                    - customers
+            contracts:
+                label: 'immovables.immovables::lang.plugin.contracts'
+                url: immovables/immovables/contracts
+                icon: icon-sliders
+                permissions:
+                    - contracts

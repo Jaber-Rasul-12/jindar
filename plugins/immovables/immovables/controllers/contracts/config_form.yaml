@@ -1,0 +1,10 @@
+name: 'immovables.immovables::lang.controller.contracts.contracts'
+form: $/immovables/immovables/models/contract/fields.yaml
+modelClass: Immovables\Immovables\Models\Contract
+defaultRedirect: immovables/immovables/contracts
+create:
+    redirect: 'immovables/immovables/contracts/update/:id'
+    redirectClose: immovables/immovables/contracts
+update:
+    redirect: immovables/immovables/contracts
+    redirectClose: immovables/immovables/contracts

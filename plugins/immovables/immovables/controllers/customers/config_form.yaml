@@ -1,0 +1,10 @@
+name: 'immovables.immovables::lang.controller.customers.customers'
+form: $/immovables/immovables/models/customer/fields.yaml
+modelClass: Immovables\Immovables\Models\Customer
+defaultRedirect: immovables/immovables/customers
+create:
+    redirect: 'immovables/immovables/customers/update/:id'
+    redirectClose: immovables/immovables/customers
+update:
+    redirect: immovables/immovables/customers
+    redirectClose: immovables/immovables/customers

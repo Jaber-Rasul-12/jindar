@@ -63,12 +63,27 @@ class Realestated extends Model
         'country' => [Country::class, 'key' => 'country_id'],
     ];
 
+
+        public $hasMany = [
+        'contracts' => [Contract::class, 'key' => 'realestated_id'],
+
+    ];
+
   
     
-    /**
-     * @var array Attribute names to encode and decode using JSON.
+            /**
+     * Perform actions before deleting 
+     *
+     * @throws \ValidationException
      */
-    public $jsonable = [];
+    public function beforeDelete()
+    {
+        foreach ($this->hasMany as $relation => $details) {
+            if ($this->{$relation}->count() > 0) {
+                throw new \ValidationException(['name' => trans('immovables.immovables::lang.plugin.message_delete')]);
+            }
+        }
+    }
 
 
 

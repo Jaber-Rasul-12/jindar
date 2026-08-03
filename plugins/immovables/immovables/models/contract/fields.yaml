@@ -1,0 +1,173 @@
+tabs:
+    icons:
+        'immovables.immovables::lang.plugin.parties': 'icon-user-friends' 
+        'immovables.immovables::lang.plugin.realestated': 'icon-building'  
+        'immovables.immovables::lang.plugin.materials': 'icon-file-contract'  
+        'immovables.immovables::lang.plugin.termination': 'icon-times-circle' 
+        'immovables.immovables::lang.plugin.renewal': 'icon-sync-alt' 
+        'immovables.immovables::lang.plugin.status': 'icon-check-circle' 
+        'immovables.immovables::lang.plugin.images': 'icon-images'  
+        'immovables.immovables::lang.plugin.log_changes': 'icon-history' 
+
+    fields:
+        # ===========================================
+        # التبويب الأول: الأطراف والعقار (المادة 1)
+        # ===========================================
+        customer_owner:
+            tab: 'immovables.immovables::lang.plugin.parties'
+            label: 'immovables.immovables::lang.model.contract.customer_owner'
+            span: auto
+            type: relationmanager
+    
+        customer_tenant:
+            tab: 'immovables.immovables::lang.plugin.parties'
+            label: 'immovables.immovables::lang.model.contract.customer_tenant'
+            span: auto
+            type: relationmanager
+    
+        # ===========================================
+        # التبويب الثاني: الغرض والمدة المالية (المواد 2،
+        realestated:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'immovables.immovables::lang.model.contract.realestated'
+            span: auto
+            type: relationmanager
+    
+        # ===========================================
+        # التبويب الثاني: الغرض والمدة المالية (المواد 2، 3، 4)
+        # ===========================================
+        lease_purpose:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.lease_purpose'
+            span: auto
+            type: text
+    
+        start_date:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.start_date'
+            span: auto
+            type: datepicker
+    
+        end_date:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.end_date'
+            span: auto
+            type: datepicker
+    
+        total_duration:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.total_duration'
+            span: auto
+            type: text
+            
+    
+        rental_amount:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.rental_amount'
+            span: auto
+            type: number
+    
+        payment_method:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.payment_method'
+            span: auto
+            type: text
+            
+    
+        payment_day:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.payment_day'
+            span: auto
+            type: datepicker  
+            
+    
+        security_deposit:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.security_deposit'
+            span: auto
+            type: number
+            
+    
+        # ===========================================
+        # التبويب الثالث: الفسخ والإخلاء (المادة 9)
+        # ===========================================
+        default_days:
+            tab: 'immovables.immovables::lang.plugin.termination'
+            label: 'immovables.immovables::lang.model.contract.default_days'
+            span: auto
+            type: number
+            
+    
+        termination_notice_days:
+            tab: 'immovables.immovables::lang.plugin.termination'
+            label: 'immovables.immovables::lang.model.contract.termination_notice_days'
+            span: auto
+            type: number
+            
+    
+        # ===========================================
+        # التبويب الرابع: التجديد والأحكام العامة (المواد 10، 11)
+        # ===========================================
+        renewal_notice_days:
+            tab: 'immovables.immovables::lang.plugin.renewal'
+            label: 'immovables.immovables::lang.model.contract.renewal_notice_days'
+            span: auto
+            type: number
+            
+    
+        judicial_district:
+            tab: 'immovables.immovables::lang.plugin.renewal'
+            label: 'immovables.immovables::lang.model.contract.judicial_district'
+            span: auto
+            type: text
+            
+    
+        witness_one:
+            tab: 'immovables.immovables::lang.plugin.renewal'
+            label: 'immovables.immovables::lang.model.contract.witness_one'
+            span: auto
+            type: text
+    
+        witness_tow:
+            tab: 'immovables.immovables::lang.plugin.renewal'
+            label: 'immovables.immovables::lang.model.contract.witness_tow'
+            span: auto
+            type: text
+    
+        # ===========================================
+        # التبويب الخامس: الحالة الإدارية (إدارة العقد)
+        # ===========================================
+        status:
+            tab: 'immovables.immovables::lang.plugin.status'
+            label: 'immovables.immovables::lang.model.contract.status'
+            span: auto
+            type: dropdown
+            options:
+                Active: 'ساري المفعول'
+                Expired: 'منتهي'
+                Terminated: 'مفسوخ'
+        photos:
+            label: immovables.immovables::lang.model.contract.images
+            type: fileupload
+            span: auto
+            mode: image
+            imageHeight: 260
+            imageWidth: 260
+            tab: 'immovables.immovables::lang.plugin.images'
+            thumbOptions:
+                mode: crop
+                offset:
+                    - 0
+                    - 0
+                quality: 90
+                sharpen: 0
+                interlace: false
+                extension: auto
+        _logbook@update:
+                type: jacob_logbook_log
+                limitPerPage: 10 
+                startPage: 1 
+                permissions: log_changes_immovabless
+                tab: 'immovables.immovables::lang.plugin.log_changes'
+                showUndoChangesButton: true 
+                refreshFormAfterUndo: true  

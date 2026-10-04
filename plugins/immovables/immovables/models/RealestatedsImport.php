@@ -12,7 +12,7 @@ class RealestatedsImport extends ImportModel
     public $rules = [
         'first_team' => 'required|string|max:255',
         'second_team' => 'required|string|max:255',
-        'country' => 'required|string|exists:immovables_immovables_countries,name',
+        'country' => 'nullable|string|exists:immovables_immovables_countries,name',
         'type' => 'nullable|string|max:100',
         'detail' => 'nullable|string',
         'area' => 'nullable|numeric|min:0',
@@ -47,7 +47,7 @@ class RealestatedsImport extends ImportModel
                 $realestated->first_team = $data['first_team'] ?? null;
                 $realestated->second_team = $data['second_team'] ?? null;
                 $realestated->type = $data['type'] ?? null;
-                $realestated->country_id = $data['country']; // إضافة الـ ID من جدول الدول
+                $realestated->country_id = 1; // إضافة الـ ID من جدول الدول
                 $realestated->detail = $data['detail'] ?? null;
                 $realestated->area = $data['area'] ?? null;
                 $realestated->syria_price = $data['syria_price'] ?? null;

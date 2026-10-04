@@ -14,7 +14,7 @@ class BuilderTableCreateImmovablesImmovablesRealestateds extends Migration
             $table->string('first_team');
             $table->string('second_team');
             $table->string('type')->nullable();
-            $table->integer('country_id')->unsigned();
+            $table->integer('country_id')->unsigned()->nullable();
             $table->text('detail')->nullable();
             $table->double('area', 10, 0)->nullable();
             $table->double('syria_price', 10, 0)->nullable();

@@ -11,11 +11,12 @@ class Realestated extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
     
+    
     use LogChanges;
 
 
     use \Winter\Storm\Database\Traits\Nullable;
-    protected $nullable = ['type', 'detail' , 'area' , 'syria_price' , 'dollar_price' , 'purchase_date', 'point'];
+    protected $nullable = ['type', 'detail' , 'area' , 'syria_price' , 'dollar_price' , 'purchase_date', 'point' , 'country_id'];
     public $fillable = ['first_team', 'second_team', 'type', 'country_id', 'detail', 'area', 'syria_price', 'dollar_price', 'purchase_date', 'point'];
 
 
@@ -37,7 +38,7 @@ class Realestated extends Model
     public $rules = [
         'first_team' => 'required|string|max:255',
         'second_team' => 'required|string|max:255',
-        'country_id' => 'required|integer|exists:immovables_immovables_countries,id',
+        'country_id' => 'nullable|integer|exists:immovables_immovables_countries,id',
         'type' => 'nullable|string|max:100',
         'detail' => 'nullable|string',
         'area' => 'nullable|numeric|min:0',

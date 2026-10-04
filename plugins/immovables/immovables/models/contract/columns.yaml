@@ -17,10 +17,15 @@ columns:
         label: 'immovables.immovables::lang.model.contract.customer_tenant'
         relation: customer_tenant
         select: full_name
-    realestated:
-        label: 'immovables.immovables::lang.model.contract.realestated'
-        relation: realestated
-        select: id
+    property_governorate:
+        label: 'المحافظة'
+        type: text
+    property_city:
+        label: 'المدينة'
+        type: text
+    property_district:
+        label: 'الحي'
+        type: text
     lease_purpose:
         label: 'immovables.immovables::lang.model.contract.lease_purpose'
         type: text

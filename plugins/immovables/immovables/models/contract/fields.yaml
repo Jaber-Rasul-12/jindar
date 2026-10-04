@@ -1,141 +1,309 @@
 tabs:
     icons:
-        'immovables.immovables::lang.plugin.parties': 'icon-user-friends' 
-        'immovables.immovables::lang.plugin.realestated': 'icon-building'  
-        'immovables.immovables::lang.plugin.materials': 'icon-file-contract'  
-        'immovables.immovables::lang.plugin.termination': 'icon-times-circle' 
-        'immovables.immovables::lang.plugin.renewal': 'icon-sync-alt' 
-        'immovables.immovables::lang.plugin.status': 'icon-check-circle' 
-        'immovables.immovables::lang.plugin.images': 'icon-images'  
-        'immovables.immovables::lang.plugin.log_changes': 'icon-history' 
+        'immovables.immovables::lang.plugin.parties': 'icon-user-friends'
+        'immovables.immovables::lang.plugin.realestated': 'icon-building'
+        'immovables.immovables::lang.plugin.materials': 'icon-file-contract'
+        'immovables.immovables::lang.plugin.termination': 'icon-times-circle'
+        'immovables.immovables::lang.plugin.renewal': 'icon-sync-alt'
+        'immovables.immovables::lang.plugin.status': 'icon-check-circle'
+        'immovables.immovables::lang.plugin.images': 'icon-images'
+        'immovables.immovables::lang.plugin.log_changes': 'icon-history'
 
     fields:
         # ===========================================
-        # التبويب الأول: الأطراف والعقار (المادة 1)
+        # التبويب الأول: الأطراف
         # ===========================================
         customer_owner:
             tab: 'immovables.immovables::lang.plugin.parties'
             label: 'immovables.immovables::lang.model.contract.customer_owner'
             span: auto
             type: relationmanager
-    
+
         customer_tenant:
             tab: 'immovables.immovables::lang.plugin.parties'
             label: 'immovables.immovables::lang.model.contract.customer_tenant'
             span: auto
             type: relationmanager
-    
+
         # ===========================================
-        # التبويب الثاني: الغرض والمدة المالية (المواد 2،
-        realestated:
+        # التبويب الثاني: العقار (حقول مباشرة)
+        # ===========================================
+        property_governorate:
             tab: 'immovables.immovables::lang.plugin.realestated'
-            label: 'immovables.immovables::lang.model.contract.realestated'
+            label: 'المحافظة'
             span: auto
-            type: relationmanager
-    
+            type: text
+
+        property_city:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'المدينة/البلدة'
+            span: auto
+            type: text
+
+        property_district:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'الحي'
+            span: auto
+            type: text
+
+        property_street:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'الشارع'
+            span: auto
+            type: text
+
+        property_building_no:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'رقم البناء'
+            span: auto
+            type: text
+
+        property_floor:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'الطابق'
+            span: auto
+            type: text
+
+        property_parcel_no:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'رقم العقار/المقسم'
+            span: auto
+            type: text
+
+        property_description:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'وهو مؤلف من'
+            span: full
+            type: textarea
+
+        property_is_furnished:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'مفروش'
+            span: auto
+            type: switch
+
+        property_furniture_list:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'قائمة الأثاث'
+            span: full
+            type: textarea
+            trigger:
+                action: show
+                field: property_is_furnished
+                condition: 'value == 1'
+
         # ===========================================
-        # التبويب الثاني: الغرض والمدة المالية (المواد 2، 3، 4)
+        # التبويب الثالث: المواد (الغرض، المدة، المالية)
         # ===========================================
+        contract_day_name:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'اسم اليوم'
+            span: auto
+            type: text
+
+        contract_date:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'تاريخ تحرير العقد'
+            span: auto
+            type: datepicker
+
         lease_purpose:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.lease_purpose'
             span: auto
             type: text
-    
+
         start_date:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.start_date'
             span: auto
             type: datepicker
-    
+
         end_date:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.end_date'
             span: auto
             type: datepicker
-    
+
         total_duration:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.total_duration'
             span: auto
             type: text
-            
-    
+
+        renewal_notice_days:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'immovables.immovables::lang.model.contract.renewal_notice_days'
+            span: auto
+            type: number
+
         rental_amount:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.rental_amount'
             span: auto
             type: number
-    
+
+        rent_period:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'الدورة (شهري / سنوي)'
+            span: auto
+            type: text
+
         payment_method:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.payment_method'
             span: auto
             type: text
-            
-    
+
         payment_day:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.payment_day'
             span: auto
-            type: datepicker  
-            
-    
+            type: datepicker
+
         security_deposit:
             tab: 'immovables.immovables::lang.plugin.materials'
             label: 'immovables.immovables::lang.model.contract.security_deposit'
             span: auto
             type: number
-            
-    
+
+        utilities_on_tenant:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'الخدمات على المستأجر (المادة 9)'
+            span: auto
+            type: text
+
+        utilities_on_lessor:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'الرسوم على المؤجر (المادة 9)'
+            span: auto
+            type: text
+
+        copies_count:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'عدد النسخ (المادة 15)'
+            span: auto
+            type: number
+
+        copy_holder:
+            tab: 'immovables.immovables::lang.plugin.materials'
+            label: 'الجهة التي تحتفظ بنسخة (المادة 15)'
+            span: auto
+            type: text
+
         # ===========================================
-        # التبويب الثالث: الفسخ والإخلاء (المادة 9)
+        # التبويب الرابع: الفسخ والإخلاء
         # ===========================================
         default_days:
             tab: 'immovables.immovables::lang.plugin.termination'
             label: 'immovables.immovables::lang.model.contract.default_days'
             span: auto
             type: number
-            
-    
+
         termination_notice_days:
             tab: 'immovables.immovables::lang.plugin.termination'
             label: 'immovables.immovables::lang.model.contract.termination_notice_days'
             span: auto
             type: number
-            
-    
+
         # ===========================================
-        # التبويب الرابع: التجديد والأحكام العامة (المواد 10، 11)
+        # التبويب الخامس: التجديد والأحكام العامة
         # ===========================================
-        renewal_notice_days:
-            tab: 'immovables.immovables::lang.plugin.renewal'
-            label: 'immovables.immovables::lang.model.contract.renewal_notice_days'
-            span: auto
-            type: number
-            
-    
         judicial_district:
             tab: 'immovables.immovables::lang.plugin.renewal'
             label: 'immovables.immovables::lang.model.contract.judicial_district'
             span: auto
             type: text
-            
-    
+
         witness_one:
             tab: 'immovables.immovables::lang.plugin.renewal'
             label: 'immovables.immovables::lang.model.contract.witness_one'
             span: auto
             type: text
-    
+
         witness_tow:
             tab: 'immovables.immovables::lang.plugin.renewal'
             label: 'immovables.immovables::lang.model.contract.witness_tow'
             span: auto
             type: text
-    
+
         # ===========================================
-        # التبويب الخامس: الحالة الإدارية (إدارة العقد)
+        # التبويب السادس: محضر استلام المأجور
+        # ===========================================
+        handover_date:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'تاريخ تسليم المأجور'
+            span: auto
+            type: datepicker
+
+        keys_count:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'عدد مفاتيح المنزل'
+            span: auto
+            type: number
+
+        electric_meter_no:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'رقم عداد الكهرباء'
+            span: auto
+            type: text
+
+        electric_reading:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'قراءة عداد الكهرباء'
+            span: auto
+            type: text
+
+        water_meter_no:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'رقم عداد المياه'
+            span: auto
+            type: text
+
+        water_reading:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'قراءة عداد المياه'
+            span: auto
+            type: text
+
+        gas_meter:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'عداد الغاز'
+            span: auto
+            type: text
+
+        doors_windows_state:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'حالة الأبواب والنوافذ'
+            span: full
+            type: textarea
+
+        bathrooms_state:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'حالة الحمامات'
+            span: full
+            type: textarea
+
+        kitchen_state:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'حالة المطبخ والتجهيزات'
+            span: full
+            type: textarea
+
+        heating_ac_state:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'حالة التدفئة / المكيفات'
+            span: full
+            type: textarea
+
+        other_notes:
+            tab: 'immovables.immovables::lang.plugin.realestated'
+            label: 'ملاحظات أخرى'
+            span: full
+            type: textarea
+
+        # ===========================================
+        # التبويب السابع: الحالة الإدارية
         # ===========================================
         status:
             tab: 'immovables.immovables::lang.plugin.status'
@@ -146,6 +314,7 @@ tabs:
                 Active: 'ساري المفعول'
                 Expired: 'منتهي'
                 Terminated: 'مفسوخ'
+
         photos:
             label: immovables.immovables::lang.model.contract.images
             type: fileupload
@@ -163,11 +332,12 @@ tabs:
                 sharpen: 0
                 interlace: false
                 extension: auto
+
         _logbook@update:
-                type: jacob_logbook_log
-                limitPerPage: 10 
-                startPage: 1 
-                permissions: log_changes_immovabless
-                tab: 'immovables.immovables::lang.plugin.log_changes'
-                showUndoChangesButton: true 
-                refreshFormAfterUndo: true  
+            type: jacob_logbook_log
+            limitPerPage: 10
+            startPage: 1
+            permissions: log_changes_immovabless
+            tab: 'immovables.immovables::lang.plugin.log_changes'
+            showUndoChangesButton: true
+            refreshFormAfterUndo: true

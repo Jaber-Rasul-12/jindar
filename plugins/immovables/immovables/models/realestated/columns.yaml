@@ -2,10 +2,9 @@ columns:
     id:
         label: 'immovables.immovables::lang.model.realestated.id'
         type: number
-    country:
+    country[name]:
         label: 'immovables.immovables::lang.model.realestated.country'
-        relation: country
-        select: name
+        
     first_team:
         label: 'immovables.immovables::lang.model.realestated.first_team'
         type: text

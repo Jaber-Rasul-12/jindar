@@ -1,36 +1,23 @@
 <?php namespace Immovables\Immovables\Models;
 
 use Model;
-// use Winter\Storm\Database\Builder;
-// use BackendAuth;
-/**
- * Model
- */
 use Carbon\Carbon;
-
 use Jacob\Logbook\Traits\LogChanges;
+
 class Contract extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
-    
-   
     use LogChanges;
 
-  public $logBookModelName = 'immovables.immovables::lang.plugin.contracts';
-  public static function changeLogBookDisplayColumn($column)
-  {
-    return 'immovables.immovables::lang.model.contract.' . $column;
-  }
+    public $logBookModelName = 'immovables.immovables::lang.plugin.contracts';
+    public static function changeLogBookDisplayColumn($column)
+    {
+        return 'immovables.immovables::lang.model.contract.' . $column;
+    }
 
-    /**
-     * @var string The database table used by the model.
-     */
     public $table = 'immovables_immovables_contracts';
 
-      public $rules = [
-        // 'customer_owner_id' => 'required|integer|exists:immovables_immovables_customers,id',
-        // 'customer_tenant_id' => 'required|integer|exists:immovables_immovables_customers,id',
-        // 'realestated_id' => 'required|integer|exists:immovables_immovables_realestateds,id',
+    public $rules = [
         'lease_purpose' => 'required|string|max:255',
         'start_date' => 'required|date|before:end_date',
         'end_date' => 'required|date|after:start_date',
@@ -48,271 +35,374 @@ class Contract extends Model
         'status' => 'required|string|max:255',
     ];
 
-
-            public $belongsTo = [
-        'realestated' => ['Immovables\Immovables\Models\Realestated', 'key' => 'realestated_id'],
+    // ===== العلاقات: فقط العملاء =====
+    public $belongsTo = [
         'customer_owner' => ['Immovables\Immovables\Models\Customer', 'key' => 'customer_owner_id'],
         'customer_tenant' => ['Immovables\Immovables\Models\Customer', 'key' => 'customer_tenant_id'],
     ];
 
-        public $attachMany = [
+    public $attachMany = [
         'photos' => 'System\Models\File'
     ];
 
-
-        /**
-     * Generates the HTML for contract preview and printing.
-     *
-     * @return string
-     */
     public function getContractHtml()
     {
-        // جلب البيانات المرتبطة
         $owner = $this->customer_owner;
         $tenant = $this->customer_tenant;
-        $property = $this->realestated;
+        $dots = '...........................';
 
-        // دالة مساعدة لتنسيق التواريخ
-        $formatDate = function($dateValue, $format = 'Y-m-d') {
-            if (empty($dateValue)) {
-                return '...........................';
-            }
+        $formatDate = function($dateValue, $format = 'Y-m-d') use ($dots) {
+            if (empty($dateValue)) return $dots;
             try {
-                if ($dateValue instanceof \DateTime) {
-                    return $dateValue->format($format);
-                }
+                if ($dateValue instanceof \DateTime) return $dateValue->format($format);
                 return Carbon::parse($dateValue)->format($format);
             } catch (\Exception $e) {
-                return '...........................';
+                return $dots;
             }
         };
 
-        // تعبئة بيانات المؤجر
-        $ownerName = $owner ? $owner->full_name : '...........................';
-        $ownerId = $owner ? $owner->id_number : '...........................';
-        $ownerAddress = $owner ? $owner->address : '...........................';
-        $ownerPhone = $owner ? $owner->phone : '...........................';
+        // ===== بيانات المؤجر =====
+        $ownerName       = $owner ? $owner->full_name : $dots;
+        $ownerFather     = $owner ? $owner->father_name : $dots;
+        $ownerMother     = $owner ? $owner->mother_name : $dots;
+        $ownerId         = $owner ? $owner->id_number : $dots;
+        $ownerBirthPlace = $owner ? $owner->birth_place : $dots;
+        $ownerBirthDate  = $owner ? $formatDate($owner->birth_date) : $dots;
+        $ownerAddress    = $owner ? $owner->address : $dots;
+        $ownerPhone      = $owner ? $owner->phone : $dots;
 
-        // تعبئة بيانات المستأجر
-        $tenantName = $tenant ? $tenant->full_name : '...........................';
-        $tenantId = $tenant ? $tenant->id_number : '...........................';
-        $tenantAddress = $tenant ? $tenant->address : '...........................';
-        $tenantPhone = $tenant ? $tenant->phone : '...........................';
+        // ===== بيانات المستأجر =====
+        $tenantName       = $tenant ? $tenant->full_name : $dots;
+        $tenantFather     = $tenant ? $tenant->father_name : $dots;
+        $tenantMother     = $tenant ? $tenant->mother_name : $dots;
+        $tenantId         = $tenant ? $tenant->id_number : $dots;
+        $tenantBirthPlace = $tenant ? $tenant->birth_place : $dots;
+        $tenantBirthDate  = $tenant ? $formatDate($tenant->birth_date) : $dots;
+        $tenantAddress    = $tenant ? $tenant->address : $dots;
+        $tenantPhone      = $tenant ? $tenant->phone : $dots;
 
-        // تعبئة بيانات العقار (من نموذج Realestated)
-        $propertyType = $property ? $property->type : '...........................';
-        $propertyDetail = $property ? $property->detail : '...........................';
-        $propertyArea = $property ? $property->area : '...........................';
-        $propertyCountry = ($property && $property->country) ? $property->country->name : '...........................';
-        // يمكن إضافة حقول إضافية من العقار مثل العنوان الكامل إذا كانت موجودة
-        // هنا نأخذ التفاصيل من حقل detail والذي قد يحتوي على العنوان
-        $propertyFullAddress = $property ? $property->detail : '...........................';
+        // ===== بيانات العقار (حقول مباشرة) =====
+        $pGovernorate = $this->property_governorate ?? $dots;
+        $pCity        = $this->property_city ?? $dots;
+        $pDistrict    = $this->property_district ?? $dots;
+        $pStreet      = $this->property_street ?? $dots;
+        $pBuildingNo  = $this->property_building_no ?? $dots;
+        $pFloor       = $this->property_floor ?? $dots;
+        $pParcelNo    = $this->property_parcel_no ?? $dots;
+        $pDescription = $this->property_description ?? $dots;
+        $pFurnished   = $this->property_is_furnished ? 'نعم' : 'لا';
+        $pFurniture   = $this->property_furniture_list ?? $dots;
 
-        // تواريخ العقد والمبالغ
-        $startDate = $formatDate($this->start_date);
-        $endDate = $formatDate($this->end_date);
-        $totalDuration = $this->total_duration ?? '...........................';
-        $rentalAmount = $this->rental_amount ?? 0;
-        $paymentMethod = $this->payment_method ?? '...........................';
-        $paymentDay = $this->payment_day ? $formatDate($this->payment_day, 'd') : '...........................'; // نأخذ اليوم فقط
+        // ===== بيانات العقد =====
+        $contractDayName = $this->contract_day_name ?? $dots;
+        $contractDate    = $this->contract_date ? $formatDate($this->contract_date) : $dots;
+        $startDate       = $formatDate($this->start_date);
+        $endDate         = $formatDate($this->end_date);
+        $totalDuration   = $this->total_duration ?? $dots;
+        $rentalAmount    = $this->rental_amount ?? 0;
+        $rentPeriod      = $this->rent_period ?? $dots;
+        $paymentMethod   = $this->payment_method ?? $dots;
+        $paymentDay      = $this->payment_day ? $formatDate($this->payment_day) : $dots;
         $securityDeposit = $this->security_deposit ?? 0;
-        $defaultDays = $this->default_days ?? 0;
-        $terminationNoticeDays = $this->termination_notice_days ?? 0;
-        $renewalNoticeDays = $this->renewal_notice_days ?? 0;
-        $judicialDistrict = $this->judicial_district ?? '...........................';
-        $witness1 = $this->witness_one ?? '...........................';
-        $witness2 = $this->witness_tow ?? '...........................';
-        $status = $this->status ?? '...........................';
-        $today = now()->format('Y-m-d');
+        $defaultDays     = $this->default_days ?? 0;
+        $terminationDays = $this->termination_notice_days ?? 0;
+        $renewalDays     = $this->renewal_notice_days ?? 0;
+        $judicialDistrict= $this->judicial_district ?? $dots;
+        $witness1        = $this->witness_one ?? $dots;
+        $witness2        = $this->witness_tow ?? $dots;
+        $status          = $this->status ?? $dots;
 
-        // صورة الخلفية (يمكن تغييرها أو تعطيلها)
+        $utilitiesTenant = $this->utilities_on_tenant ?? $dots;
+        $utilitiesLessor = $this->utilities_on_lessor ?? $dots;
+        $copiesCount     = $this->copies_count ?? $dots;
+        $copyHolder      = $this->copy_holder ?? $dots;
+
+        $leasePurpose    = $this->lease_purpose ?? $dots;
+
+        // ===== محضر الاستلام =====
+        $handoverDate    = $this->handover_date ? $formatDate($this->handover_date) : $dots;
+        $keysCount       = $this->keys_count ?? $dots;
+        $electricNo      = $this->electric_meter_no ?? $dots;
+        $electricReading = $this->electric_reading ?? $dots;
+        $waterNo         = $this->water_meter_no ?? $dots;
+        $waterReading    = $this->water_reading ?? $dots;
+        $gasMeter        = $this->gas_meter ?? $dots;
+        $doorsState      = $this->doors_windows_state ?? $dots;
+        $bathroomsState  = $this->bathrooms_state ?? $dots;
+        $kitchenState    = $this->kitchen_state ?? $dots;
+        $heatingState    = $this->heating_ac_state ?? $dots;
+        $otherNotes      = $this->other_notes ?? $dots;
+
         $imageUrl = e(\Backend\Models\BrandSetting::getFavicon());
 
-        // بناء HTML للعقد
         $html = <<<HTML
-        <div class="contract-wrapper" style="direction: rtl; font-family: 'Tahoma', 'Arial', sans-serif; max-width: 1100px; margin: 0 auto;  padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; overflow: hidden;">
-            
-            <!-- صورة خلفية خفيفة -->
+        <div class="contract-wrapper" style="direction: rtl; font-family: 'Tahoma', 'Arial', sans-serif; max-width: 1100px; margin: 0 auto; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative; overflow: hidden;">
 
+            <img src="{$imageUrl}" class="contract-background-image"
+                 style="position: fixed; top:0; left:0; width:100%; height:100%; object-fit:cover; opacity:0.05; z-index:0; pointer-events:none;" alt="خلفية">
 
-            <div style="background: #fff; padding: 40px 50px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); position: relative; z-index: 1;">
+            <div style="background:#fff; padding: 40px 50px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.05); position: relative; z-index:1;">
 
-                        <img src="{$imageUrl}" 
-                 class="contract-background-image"
-                 style="position: fixed; 
-                        top: 0; left: 0; 
-                        width: 100%; height: 100%; 
-                        object-fit: cover; 
-                        opacity: 0.05; 
-                        z-index: 0; 
-                        pointer-events: none;"
-                 alt="خلفية العقد">
-                <!-- رأس العقد -->
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px double #2c3e50; padding-bottom: 15px; margin-bottom: 25px;">
-                    <div style="font-size: 22px; font-weight: bold; color: #2c3e50;">عقد إيجار عقار</div>
-                    <div style="text-align: left; font-size: 14px; color: #7f8c8d;">رقم العقد: {$this->id}</div>
+                <!-- ترويسة العقد -->
+                <div style="text-align:center; border-bottom: 3px double #2c3e50; padding-bottom: 15px; margin-bottom: 25px;">
+                    <h1 style="margin:0; font-size: 24px; font-weight: bold; color:#2c3e50;">عقد تأجير عقارات شركة Jir للتجارة العامة</h1>
+                    <div style="margin-top:8px; font-size:14px; color:#7f8c8d;">رقم العقد: {$this->id}</div>
                 </div>
 
-                <!-- المقدمة -->
-                <div style="margin: 25px 0; padding: 15px; background: #fdfaf0; border-radius: 8px; border: 1px solid #f1c40f;">
-                    <h3 style="color: #8e44ad; margin-top: 0;">مقدمة</h3>
-                    <p style="line-height: 1.9; text-align: justify; margin: 0;">
-                        إنه في يوم {$today}، تم الاتفاق بين كل من:<br>
-                        <strong>الفريق الأول (المؤجر):</strong> {$ownerName}، رقم الهوية: {$ownerId}، العنوان: {$ownerAddress}، هاتف: {$ownerPhone}.<br>
-                        <strong>الفريق الثاني (المستأجر):</strong> {$tenantName}، رقم الهوية: {$tenantId}، العنوان: {$tenantAddress}، هاتف: {$tenantPhone}.<br>
-                        بعد أن كان الفريق الأول هو المالك الشرعي للعقار الموصوف أدناه، ورغبة منه في تأجيره، ورغبة من الفريق الثاني في استئجاره للغرض المحدد، اتفقا وهما بكامل الأهلية القانونية على ما يلي:
+                <!-- التاريخ -->
+                <p style="font-size:15px; margin:20px 0;">
+                    إنه في يوم <span style="border-bottom:1px dotted #555; padding:0 20px;">{$contractDayName}</span>
+                    الموافق <span style="border-bottom:1px dotted #555; padding:0 15px;">{$contractDate}</span>،
+                    تم الاتفاق والتراضي بين كل من:
+                </p>
+
+                <!-- المؤجر -->
+                <div style="margin: 25px 0; padding: 15px 20px; background:#f8f9fb; border-right: 4px solid #2980b9; border-radius:4px;">
+                    <h3 style="margin:0 0 12px 0; color:#2980b9; font-size:17px;">أولاً: المؤجر</h3>
+                    <table style="width:100%; border-collapse:collapse; font-size:14.5px;">
+                        <tr><td style="padding:6px 0; width:35%;"><strong>السيد/السيدة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerName}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>اسم الأب:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerFather}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>اسم الأم:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerMother}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>رقم الهوية/البطاقة الشخصية:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerId}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>مكان الولادة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerBirthPlace}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>تاريخ الولادة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerBirthDate}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>العنوان:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$ownerAddress}</td></tr>
+                    </table>
+                    <p style="margin:12px 0 0 0; font-size:14px;">ويشار إليه في هذا العقد بـ <strong>"المؤجر"</strong>.</p>
+                </div>
+
+                <!-- المستأجر -->
+                <div style="margin: 25px 0; padding: 15px 20px; background:#f8f9fb; border-right: 4px solid #27ae60; border-radius:4px;">
+                    <h3 style="margin:0 0 12px 0; color:#27ae60; font-size:17px;">ثانياً: المستأجر</h3>
+                    <table style="width:100%; border-collapse:collapse; font-size:14.5px;">
+                        <tr><td style="padding:6px 0; width:35%;"><strong>السيد/السيدة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantName}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>اسم الأب:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantFather}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>اسم الأم:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantMother}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>رقم الهوية/البطاقة الشخصية:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantId}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>مكان الولادة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantBirthPlace}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>تاريخ الولادة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantBirthDate}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>العنوان:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$tenantAddress}</td></tr>
+                    </table>
+                    <p style="margin:12px 0 0 0; font-size:14px;">ويشار إليه في هذا العقد بـ <strong>"المستأجر"</strong>.</p>
+                </div>
+
+                <p style="font-size:15px; margin:25px 0; text-align:justify;">وقد أقر الطرفان بأهليتهما القانونية للتعاقد، واتفقا على ما يلي:</p>
+
+                <!-- المادة 1 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 1 – المأجور</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:8px 0;">أجر المؤجر إلى المستأجر المنزل الواقع في:</p>
+                    <table style="width:100%; border-collapse:collapse; font-size:14.5px;">
+                        <tr><td style="padding:6px 0; width:30%;"><strong>المحافظة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pGovernorate}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>المدينة/البلدة:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pCity}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>الحي:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pDistrict}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>الشارع:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pStreet}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>رقم البناء:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pBuildingNo}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>الطابق:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pFloor}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>رقم العقار/المقسم:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pParcelNo}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>وهو مؤلف من:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pDescription}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>مفروش:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pFurnished}</td></tr>
+                        <tr><td style="padding:6px 0;"><strong>قائمة الأثاث:</strong></td><td style="padding:6px 0; border-bottom:1px dotted #aaa;">{$pFurniture}</td></tr>
+                    </table>
+                    <p style="font-size:14.5px; text-align:justify; margin:12px 0 0 0;">
+                        ويشمل الإيجار، إن وجد: المطبخ، الحمامات، الشرفة، المستودع، المرآب، والمرافق والتجهيزات المبينة في محضر الاستلام المرفق بهذا العقد.
                     </p>
                 </div>
 
-                <!-- المادة 1: وصف العقار -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 1: وصف العقار المؤجر</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 30px; background: #fcfcfc; padding: 15px; border-radius: 6px;">
-                        <span><strong>نوع العقار:</strong> {$propertyType}</span>
-                        <span><strong>المساحة:</strong> {$propertyArea} م²</span>
-                        <span><strong>الموقع:</strong> {$propertyCountry}</span>
-                        <span><strong>التفاصيل:</strong> {$propertyDetail}</span>
-                        <span><strong>العنوان الكامل:</strong> {$propertyFullAddress}</span>
-                        <span><strong>المرافق المتوفرة:</strong> (ماء، كهرباء، هاتف، تدفئة...) </span>
+                <!-- المادة 2 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 2 – الغرض من الإيجار</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        خصص المأجور لغرض: <strong>{$leasePurpose}</strong>، ولا يجوز استعماله لنشاط تجاري أو مهني أو لأي غرض مخالف للقوانين أو لطبيعة العقار إلا بموافقة خطية من المؤجر والجهات المختصة عند وجوبها.
+                    </p>
+                </div>
+
+                <!-- المادة 3 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 3 – مدة الإيجار</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        مدة هذا العقد هي <strong>{$totalDuration}</strong> تبدأ من تاريخ <strong>{$startDate}</strong> وتنتهي بتاريخ <strong>{$endDate}</strong>.
+                        ويجوز للطرفين الاتفاق خطياً على تجديد العقد قبل انتهاء مدته بـ <strong>{$renewalDays}</strong> يوماً.
+                    </p>
+                </div>
+
+                <!-- المادة 4 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 4 – بدل الإيجار</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0 0 8px 0;">اتفق الطرفان على أن بدل الإيجار هو مبلغ وقدره:</p>
+                    <p style="font-size:15px; margin:8px 0;">( <strong>{$rentalAmount}</strong> ) ليرة سورية <strong>{$rentPeriod}</strong>.</p>
+                    <p style="font-size:14.5px; text-align:justify; margin:8px 0 0 0;">
+                        ويُدفع البدل في موعد أقصاه <strong>{$paymentDay}</strong> من كل شهر/سنة، بموجب <strong>{$paymentMethod}</strong>.
+                    </p>
+                </div>
+
+                <!-- المادة 5 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 5 – التأمين</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0 0 8px 0;">دفع المستأجر للمؤجر عند توقيع العقد مبلغاً قدره:</p>
+                    <p style="font-size:15px; margin:8px 0;"><strong>{$securityDeposit}</strong> ليرة سورية</p>
+                    <p style="font-size:14.5px; text-align:justify; margin:8px 0 0 0;">
+                        كتأمين ضمان، يرد إليه عند انتهاء الإيجار وتسليم المأجور.
+                    </p>
+                </div>
+
+                <!-- المادة 6 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 6 – تسليم المأجور</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        يقر المستأجر بأنه عاين المأجور معاينة تامة، ووجده صالحاً للسكن ومطابقاً للحالة المبينة في محضر الاستلام المرفق.
+                    </p>
+                </div>
+
+                <!-- المادة 7 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 7 – التزامات المؤجر</h3>
+                    <ol style="font-size:14.5px; padding-right:25px; margin:0;">
+                        <li style="margin-bottom:6px;">تسليم المأجور بالحالة المتفق عليها.</li>
+                        <li>إجراء الإصلاحات الأساسية التي لا تكون ناشئة عن سوء استعمال المستأجر.</li>
+                    </ol>
+                </div>
+
+                <!-- المادة 8 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 8 – التزامات المستأجر</h3>
+                    <ol style="font-size:14.5px; padding-right:25px; margin:0;">
+                        <li style="margin-bottom:6px;">دفع بدل الإيجار في مواعيده.</li>
+                        <li style="margin-bottom:6px;">المحافظة على المأجور واستعماله استعمالاً مألوفاً ومشروعاً.</li>
+                        <li style="margin-bottom:6px;">عدم إجراء تغييرات جوهرية دون موافقة المؤجر الخطية.</li>
+                        <li style="margin-bottom:6px;">عدم تأجير المأجور من الباطن إلا وفقاً للقانون.</li>
+                        <li style="margin-bottom:6px;">تحمل تكاليف الأضرار الناتجة عن سوء استعماله أو إهماله.</li>
+                        <li>إعادة المأجور عند انتهاء العقد بحالته الأصلية مع مراعاة الاستهلاك الطبيعي.</li>
+                    </ol>
+                </div>
+
+                <!-- المادة 9 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 9 – الماء والكهرباء والخدمات</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0 0 8px 0;">تكون رسوم استهلاك الكهرباء والماء والغاز والاتصالات على عاتق:</p>
+                    <p style="font-size:15px; border-bottom:1px dotted #aaa; padding:6px 0; margin:0 0 12px 0;"><strong>{$utilitiesTenant}</strong></p>
+                    <p style="font-size:14.5px; text-align:justify; margin:0 0 8px 0;">أما الالتزامات والرسوم الأخرى المتعلقة بملكية العقار فتكون على عاتق:</p>
+                    <p style="font-size:15px; border-bottom:1px dotted #aaa; padding:6px 0; margin:0;"><strong>{$utilitiesLessor}</strong></p>
+                </div>
+
+                <!-- المادة 10 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 10 – الصيانة والإصلاح</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        يتحمل المستأجر أعمال الصيانة البسيطة، بينما يتحمل المؤجر الإصلاحات الأساسية التي لا تكون بسبب خطأ أو سوء استعمال من المستأجر.
+                    </p>
+                </div>
+
+                <!-- المادة 11 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 11 – انتهاء العقد والإخلاء</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        ينتهي عقد الإيجار بانتهاء مدته. وعند انتهاء العلاقة الإيجارية، يلتزم المستأجر بتسليم المأجور ومفاتيحه وملحقاته.
+                        في حال رغبة أحد الطرفين بإنهاء العقد قبل موعده، يجب الإخطار قبل <strong>{$terminationDays}</strong> يوماً.
+                    </p>
+                </div>
+
+                <!-- المادة 12 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 12 – المخالفات والفسخ</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        في حال إخلال أحد الطرفين بالتزام جوهري، يحق للطرف المتضرر المطالبة بحقوقه وفقاً للقانون.
+                        وفي حال تأخر المستأجر عن سداد الإيجار لمدة <strong>{$defaultDays}</strong> يوماً، يحق للمؤجر فسخ العقد.
+                    </p>
+                </div>
+
+                <!-- المادة 13 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 13 – عنوان التبليغ</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        يعتبر العنوان المبين في صدر هذا العقد عنواناً مختاراً لكل طرف لأغراض المراسلات والتبليغات المتعلقة بالعقد.
+                    </p>
+                </div>
+
+                <!-- المادة 14 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 14 – حل النزاعات</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        في حال نشوء أي نزاع، يسعى الطرفان إلى حله ودياً، وفي حال تعذر ذلك تكون المحاكم السورية المختصة هي المرجع.
+                        الدائرة القضائية المختصة: <strong>{$judicialDistrict}</strong>.
+                    </p>
+                </div>
+
+                <!-- المادة 15 -->
+                <div class="contract-article" style="margin:20px 0;">
+                    <h3 style="background:#2c3e50; color:#fff; padding:8px 15px; border-radius:4px; font-size:16px; margin:0 0 12px 0;">المادة 15 – النسخ</h3>
+                    <p style="font-size:14.5px; text-align:justify; margin:0;">
+                        حرر هذا العقد من <strong>{$copiesCount}</strong> نسخ أصلية، تسلم كل طرف نسخة منها، واحتفظت نسخة لدى <strong>{$copyHolder}</strong> إن وجدت.
+                    </p>
+                    <p style="font-size:14.5px; text-align:justify; margin:12px 0 0 0;">
+                        ويقر الطرفان بأنهما قرآ العقد وفهما جميع بنوده ووافقا عليها بإرادتهما الحرة.
+                    </p>
+                </div>
+
+                <!-- التوقيعات -->
+                <div style="display:flex; justify-content:space-between; margin-top:45px; gap:20px;">
+                    <div style="flex:1; font-size:14.5px;">
+                        <p style="font-weight:bold; margin:0 0 25px 0;">المؤجر:</p>
+                        <p style="margin:0 0 12px 0;">الاسم: <strong>{$ownerName}</strong></p>
+                        <p style="margin:0;">التوقيع: _______________________</p>
+                    </div>
+                    <div style="flex:1; font-size:14.5px;">
+                        <p style="font-weight:bold; margin:0 0 25px 0;">الشاهد الأول:</p>
+                        <p style="margin:0 0 12px 0;">الاسم: <strong>{$witness1}</strong></p>
+                        <p style="margin:0;">رقم الهوية والتوقيع: _____________</p>
                     </div>
                 </div>
 
-                <!-- المادة 2: غرض الإيجار -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 2: غرض الإيجار</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px;">
-                        <p><strong>الغرض:</strong> {$this->lease_purpose}</p>
+                <div style="display:flex; justify-content:space-between; margin-top:40px; gap:20px;">
+                    <div style="flex:1; font-size:14.5px;">
+                        <p style="font-weight:bold; margin:0 0 25px 0;">المستأجر:</p>
+                        <p style="margin:0 0 12px 0;">الاسم: <strong>{$tenantName}</strong></p>
+                        <p style="margin:0;">التوقيع: _______________________</p>
+                    </div>
+                    <div style="flex:1; font-size:14.5px;">
+                        <p style="font-weight:bold; margin:0 0 25px 0;">الشاهد الثاني:</p>
+                        <p style="margin:0 0 12px 0;">الاسم: <strong>{$witness2}</strong></p>
+                        <p style="margin:0;">رقم الهوية والتوقيع: _____________</p>
                     </div>
                 </div>
 
-                <!-- المادة 3: مدة الإيجار -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 3: مدة الإيجار</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px;">
-                        <p><strong>بداية العقد:</strong> {$startDate}</p>
-                        <p><strong>نهاية العقد:</strong> {$endDate}</p>
-                        <p><strong>المدة الإجمالية:</strong> {$totalDuration}</p>
-                    </div>
-                </div>
+                <!-- محضر استلام المأجور -->
+                <div class="page-break-before" style="margin-top:60px; border-top:3px double #2c3e50; padding-top:25px;">
+                    <h2 style="text-align:center; color:#2c3e50; font-size:20px; margin:0 0 20px 0;">محضر استلام المأجور</h2>
+                    <p style="font-size:14.5px; margin:0 0 15px 0;">
+                        بتاريخ <strong>{$handoverDate}</strong> تم تسليم المأجور إلى المستأجر، وكانت حالته والتجهيزات كما يلي:
+                    </p>
+                    <ul style="list-style:none; padding:0; font-size:14.5px; line-height:2;">
+                        <li>• عدد مفاتيح المنزل: <strong>{$keysCount}</strong></li>
+                        <li>• عداد الكهرباء: رقم <strong>{$electricNo}</strong>، القراءة <strong>{$electricReading}</strong></li>
+                        <li>• عداد المياه: رقم <strong>{$waterNo}</strong>، القراءة <strong>{$waterReading}</strong></li>
+                        <li>• عداد الغاز إن وجد: <strong>{$gasMeter}</strong></li>
+                        <li>• حالة الأبواب والنوافذ: <strong>{$doorsState}</strong></li>
+                        <li>• حالة الحمامات: <strong>{$bathroomsState}</strong></li>
+                        <li>• حالة المطبخ والتجهيزات: <strong>{$kitchenState}</strong></li>
+                        <li>• التدفئة/المكيفات: <strong>{$heatingState}</strong></li>
+                        <li>• الأثاث الموجود إن كان المنزل مفروشاً: <strong>{$pFurniture}</strong></li>
+                        <li>• ملاحظات أخرى: <strong>{$otherNotes}</strong></li>
+                    </ul>
 
-                <!-- المادة 4: بدل الإيجار -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 4: بدل الإيجار وطريقة الدفع</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px;">
-                        <p>يُحدد بدل الإيجار بمبلغ <strong style="color: #c0392b;">{$rentalAmount} ليرة سورية</strong> شهرياً (أو سنوياً حسب الاتفاق).</p>
-                        <p>طريقة الدفع: {$paymentMethod}، في اليوم {$paymentDay} من كل شهر مقدماً.</p>
-                        <p>يتحمل المستأجر كافة الرسوم والضرائب المترتبة على الإيجار.</p>
-                    </div>
-                </div>
+                    <p style="font-size:14.5px; margin:25px 0 35px 0;">ويوقع الطرفان على هذا المحضر باعتباره جزءاً من عقد الإيجار.</p>
 
-                <!-- المادة 5: التأمين النقدي -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 5: التأمين النقدي (الضمان)</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px;">
-                        <p>دفع المستأجر للمؤجر مبلغ <strong style="color: #c0392b;">{$securityDeposit} ليرة سورية</strong> كتأمين نقدي ضماناً لتنفيذ التزاماته.</p>
-                        <p>يُعاد هذا المبلغ بعد انتهاء العقد وتسليم العقار، بعد خصم أي مستحقات أو تعويضات عن أضرار.</p>
-                    </div>
-                </div>
-
-                <!-- المادة 6: المرافق والفواتير -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 6: المرافق والفواتير</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px; line-height: 1.8;">
-                        <p><strong>يتحمل المستأجر تكاليف:</strong> الكهرباء، المياه، الهاتف، الإنترنت، رسوم التدفئة (إن وجدت).</p>
-                        <p><strong>يتحمل المؤجر:</strong> الرسوم البلدية، رسوم الصيانة الكبرى للبناء.</p>
-                    </div>
-                </div>
-
-                <!-- المادة 7: التزامات المؤجر -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 7: التزامات المؤجر</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px; line-height: 1.8;">
-                        <ul style="padding-right: 20px; margin: 0;">
-                            <li>تسليم العقار خالياً من الشواغل وبحالة صالحة للاستعمال.</li>
-                            <li>إجراء الصيانة الجوهرية للعقار (السباكة الرئيسية، الكهرباء العامة، الهيكل).</li>
-                            <li>عدم التدخل في حق المستأجر بالانتفاع بالعقار.</li>
-                            <li>ضمان العيوب الخفية التي قد تظهر.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- المادة 8: التزامات المستأجر -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 8: التزامات المستأجر</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px; line-height: 1.8;">
-                        <ul style="padding-right: 20px; margin: 0;">
-                            <li>سداد بدل الإيجار في مواعيده المحددة.</li>
-                            <li>استعمال العقار للغرض المتفق عليه فقط، وعدم استخدامه لأغراض غير مشروعة.</li>
-                            <li>إجراء الصيانة الاعتيادية البسيطة (استبدال المصابيح، حنفيات الماء).</li>
-                            <li>عدم إجراء تعديلات إنشائية دون موافقة خطية من المؤجر.</li>
-                            <li>عدم تأجير العقار من الباطن دون موافقة المؤجر.</li>
-                            <li>المحافظة على العقار وإعادته عند انتهاء العقد بحالته الأصلية (مع الاستهلاك الطبيعي).</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- المادة 9: الفسخ والإخلاء -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 9: الفسخ والإخلاء</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px; line-height: 1.8;">
-                        <ul style="padding-right: 20px; margin: 0;">
-                            <li>ينتهي العقد بانتهاء مدته المحددة، ويلزم المستأجر بإخلاء العقار فوراً.</li>
-                            <li>للمؤجر فسخ العقد وإخلاء المستأجر في حال تأخر عن سداد الإيجار لمدة <strong>{$defaultDays}</strong> يوماً دون عذر، أو الإخلال بأي التزام جوهري.</li>
-                            <li>يمكن لأي من الطرفين فسخ العقد قبل موعده بشرط الإخطار قبل <strong>{$terminationNoticeDays}</strong> يوماً.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- المادة 10: التجديد -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 10: التجديد</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px;">
-                        <p>لا يُجدد العقد تلقائياً. يجب على الطرفين الاتفاق على التجديد خطياً قبل <strong>{$renewalNoticeDays}</strong> يوماً من انتهاء العقد.</p>
-                    </div>
-                </div>
-
-                <!-- المادة 11: أحكام عامة -->
-                <div style="margin-bottom: 25px;">
-                    <h3 style="color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px;">المادة 11: أحكام عامة</h3>
-                    <div style="background: #f9f9f9; padding: 12px 20px; border-radius: 6px; line-height: 1.8;">
-                        <ul style="padding-right: 20px; margin: 0;">
-                            <li>تسري على هذا العقد أحكام قانون الإيجارات السوري رقم 20 لعام 2015 والقانون المدني.</li>
-                            <li>أي تعديل أو إضافة على العقد تكون باطلة ما لم تكن خطية وموقعة من الطرفين.</li>
-                            <li>الاختصاص القضائي للمحاكم في {$judicialDistrict} (مكان وقوع العقار).</li>
-                            <li>حرر العقد من نسختين أصليتين، بيد كل طرف نسخة.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- المادة 12: الشهود والتوقيعات -->
-                <div style="border-top: 2px solid #2c3e50; padding-top: 25px; margin-top: 10px;">
-                    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-                        <div style="width: 45%;">
-                            <h4 style="margin: 0 0 10px 0; color: #2980b9;">الفريق الأول (المؤجر)</h4>
-                            <p><strong>الاسم:</strong> {$ownerName}</p>
-                            <p><strong>التوقيع:</strong> ........................</p>
-                            <p><strong>الختم:</strong> ........................</p>
+                    <div style="display:flex; justify-content:space-between; gap:20px;">
+                        <div style="flex:1; font-size:14.5px;">
+                            <p style="margin:0 0 20px 0;"><strong>المؤجر:</strong> {$ownerName}</p>
+                            <p style="margin:0;">التوقيع: _______________________</p>
                         </div>
-                        <div style="width: 45%;">
-                            <h4 style="margin: 0 0 10px 0; color: #27ae60;">الفريق الثاني (المستأجر)</h4>
-                            <p><strong>الاسم:</strong> {$tenantName}</p>
-                            <p><strong>التوقيع:</strong> ........................</p>
-                            <p><strong>الختم:</strong> ........................</p>
+                        <div style="flex:1; font-size:14.5px;">
+                            <p style="margin:0 0 20px 0;"><strong>المستأجر:</strong> {$tenantName}</p>
+                            <p style="margin:0;">التوقيع: _______________________</p>
                         </div>
                     </div>
-                    <div style="margin-top: 20px; background: #ecf0f1; padding: 10px 20px; border-radius: 6px;">
-                        <p><strong>شاهد أول:</strong> {$witness1}</p>
-                        <p><strong>شاهد ثان:</strong> {$witness2}</p>
-                    </div>
-                    <p style="text-align: left; margin-top: 20px; color: #7f8c8d;"><strong>حرر في:</strong> {$judicialDistrict} <strong>بتاريخ:</strong> {$today}</p>
                 </div>
 
-            </div> <!-- نهاية الـ inner div -->
-        </div> <!-- نهاية الـ wrapper -->
+            </div>
+        </div>
 HTML;
 
         return $html;
     }
-
-
 }

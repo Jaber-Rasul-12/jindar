@@ -3,10 +3,26 @@ fields:
         label: 'immovables.immovables::lang.model.customer.full_name'
         span: auto
         type: text
+    father_name:
+        label: 'اسم الأب'
+        span: auto
+        type: text
+    mother_name:
+        label: 'اسم الأم'
+        span: auto
+        type: text
     id_number:
         label: 'immovables.immovables::lang.model.customer.id_number'
         span: auto
         type: text
+    birth_place:
+        label: 'مكان الولادة'
+        span: auto
+        type: text
+    birth_date:
+        label: 'تاريخ الولادة'
+        span: auto
+        type: datepicker
     address:
         label: 'immovables.immovables::lang.model.customer.address'
         span: auto

@@ -1,20 +1,20 @@
 <?php namespace Immovables\Immovables\Models;
 
 use Model;
- 
+
 use Jacob\Logbook\Traits\LogChanges;
- 
+
 class Customer extends Model
 {
     use \Winter\Storm\Database\Traits\Validation;
-    
+
     use LogChanges;
 
-  public $logBookModelName = 'immovables.immovables::lang.plugin.customers';
-  public static function changeLogBookDisplayColumn($column)
-  {
-    return 'immovables.immovables::lang.model.customer.' . $column;
-  }
+    public $logBookModelName = 'immovables.immovables::lang.plugin.customers';
+    public static function changeLogBookDisplayColumn($column)
+    {
+        return 'immovables.immovables::lang.model.customer.' . $column;
+    }
 
     /**
      * @var string The database table used by the model.
@@ -31,26 +31,16 @@ class Customer extends Model
         'phone' => 'required|string|max:20',
     ];
 
-   
-
-
     /**
-     * Defines a "hasMany" relationship.
-     *
-     * - Establishes a one-to-many relationship between this model and the `nameClass` model.
-     * - The foreign key `key_relation_id` is used to link multiple related records.
-     * - This allows retrieving multiple `nameRelation` records associated with this model.
-     *
-     * @var array
+     * @var array Relations
      */
     public $hasMany = [
         'contracts_owner' => [Contract::class, 'key' => 'customer_owner_id'],
         'contracts_tenant' => [Contract::class, 'key' => 'customer_tenant_id'],
-
     ];
 
-            /**
-     * Perform actions before deleting 
+    /**
+     * Perform actions before deleting
      *
      * @throws \ValidationException
      */
@@ -62,8 +52,4 @@ class Customer extends Model
             }
         }
     }
-    
-
-
-
 }

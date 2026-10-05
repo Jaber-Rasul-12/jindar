@@ -229,7 +229,7 @@ class Contract extends Model
             <div class="contract-article" style="margin:14px 0;">
                 <h3 style="background:#2c3e50; color:#fff; padding:6px 12px; border-radius:4px; font-size:14px; margin:0 0 8px 0;">المادة 4 – بدل الإيجار</h3>
                 <p style="font-size:13.5px; text-align:justify; margin:0 0 6px 0;">اتفق الطرفان على أن بدل الإيجار هو مبلغ وقدره:</p>
-                <p style="font-size:14px; margin:6px 0;">( <strong>{$rentalAmount}</strong> ) ليرة سورية <strong>{$rentPeriod}</strong>.</p>
+                <p style="font-size:14px; margin:6px 0;">( <strong>{$rentalAmount} $</strong> ) دولار <strong>{$rentPeriod}</strong>.</p>
                 <p style="font-size:13.5px; text-align:justify; margin:6px 0 0 0;">
                     ويُدفع البدل في موعد أقصاه <strong>{$paymentDay}</strong> من كل شهر/سنة، بموجب <strong>{$paymentMethod}</strong>.
                 </p>
@@ -239,7 +239,7 @@ class Contract extends Model
             <div class="contract-article" style="margin:14px 0;">
                 <h3 style="background:#2c3e50; color:#fff; padding:6px 12px; border-radius:4px; font-size:14px; margin:0 0 8px 0;">المادة 5 – التأمين</h3>
                 <p style="font-size:13.5px; text-align:justify; margin:0 0 6px 0;">دفع المستأجر للمؤجر عند توقيع العقد مبلغاً قدره:</p>
-                <p style="font-size:14px; margin:6px 0;"><strong>{$securityDeposit}</strong> ليرة سورية</p>
+                <p style="font-size:14px; margin:6px 0;"><strong>{$securityDeposit} $</strong> دولار</p>
                 <p style="font-size:13.5px; text-align:justify; margin:6px 0 0 0;">
                     كتأمين ضمان، يرد إليه عند انتهاء الإيجار وتسليم المأجور.
                 </p>

@@ -74,7 +74,7 @@ tabs:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'وهو مؤلف من'
             span: full
-            type: textarea
+            type: text
 
         property_is_furnished:
             tab: 'immovables.immovables::lang.plugin.realestated'
@@ -86,7 +86,7 @@ tabs:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'قائمة الأثاث'
             span: full
-            type: textarea
+            type: text
             trigger:
                 action: show
                 field: property_is_furnished
@@ -276,31 +276,31 @@ tabs:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'حالة الأبواب والنوافذ'
             span: full
-            type: textarea
+            type: text
 
         bathrooms_state:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'حالة الحمامات'
             span: full
-            type: textarea
+            type: text
 
         kitchen_state:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'حالة المطبخ والتجهيزات'
             span: full
-            type: textarea
+            type: text
 
         heating_ac_state:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'حالة التدفئة / المكيفات'
             span: full
-            type: textarea
+            type: text
 
         other_notes:
             tab: 'immovables.immovables::lang.plugin.realestated'
             label: 'ملاحظات أخرى'
             span: full
-            type: textarea
+            type: text
 
         # ===========================================
         # التبويب السابع: الحالة الإدارية
